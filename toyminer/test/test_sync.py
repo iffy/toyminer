@@ -3,6 +3,7 @@ from hashlib import sha1
 
 
 from toyminer.sync import SyncMiner
+from toyminer.jobs import Job
 from toyminer.validate import validAnswer
 
 
@@ -13,7 +14,8 @@ class SyncMinerTest(TestCase):
         h = sha1('foo').hexdigest()
         d = 1
         scale = 100
-        r = SyncMiner().mine(h, d, scale)
+        job = Job(h, d, scale)
+        r = SyncMiner().mine(job)
         self.assertTrue(validAnswer(h, d, scale, r))
 
 
@@ -21,5 +23,5 @@ class SyncMinerTest(TestCase):
         h = sha1('foo').hexdigest()
         d = 1
         s = 100000
-        r = SyncMiner().mine(h, d, s)
+        r = SyncMiner().mine(Job(h, d, s))
         self.assertTrue(validAnswer(h, d, s, r))
