@@ -39,9 +39,11 @@ class SyncMiner(object):
 
 
 def main(given_hash, difficulty, scale):
-    print SyncMiner().mine(given_hash, difficulty, scale)
+    return SyncMiner().mine(given_hash, difficulty, scale)
 
 
 if __name__ == '__main__':
     import sys
-    main(*sys.argv[1:])
+    given_hash = sys.argv[1]
+    difficulty, scale = map(int, sys.argv[2:])
+    sys.stdout.write(main(given_hash, difficulty, scale))
