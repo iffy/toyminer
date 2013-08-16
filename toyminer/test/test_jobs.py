@@ -14,7 +14,8 @@ class JobTest(TestCase):
         self.assertEqual(job.scale, 100)
         self.assertEqual(job.miner, None)
         self.assertEqual(job.status, 'new')
-        self.assertEqual(job.result.called, False)
+        self.assertEqual(job.done.called, False)
+        self.assertEqual(job.result, None)
 
 
     def test_changeStatus(self):
@@ -39,3 +40,14 @@ class JobTest(TestCase):
         job.setMiner('foo')
         self.assertEqual(job.miner, 'foo')
         self.assertEqual(called, [job])
+
+
+    def test_setResult(self):
+        """
+        Setting the result of a Job will call the done callback and set the
+        result attribute.
+        """
+        job = Job('a', 1, 100)
+        job.setResult('foo')
+        self.assertEqual(self.successResultOf(job.done), job)
+        self.assertEqual(job.result, 'foo')

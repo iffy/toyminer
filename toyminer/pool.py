@@ -19,6 +19,7 @@ class MinerPool(object):
         """
         Choose a miner from the pool, and have them mine
         """
+        job.setStatus('queued')
         d = self.queue.get()
         d.addCallback(self._mineWithMiner, job)
         return d
@@ -66,13 +67,12 @@ class MinerPool(object):
             # the miner is idle
             self.all_miners.remove(miner)
             self.queue.pending.remove(miner)
-            return miner
+            return defer.succeed(miner)
         else:
             # the miner is out doing something
             d = defer.Deferred()
             self._to_remove.append((miner, d))
             return d
-        
 
 
     def listMiners(self):

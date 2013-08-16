@@ -9,13 +9,20 @@ class Job(object):
 
     miner = None
     status = 'new'
+    result = None
 
     def __init__(self, given_hash, difficulty, scale):
         self.given_hash = given_hash
         self.difficulty = difficulty
         self.scale = scale
-        self.result = defer.Deferred()
+        self.done = defer.Deferred()
         self._funcs_to_notify = []
+
+
+    def __repr__(self):
+        return '<Job %s %s %s %r %r>' % (self.status, self.miner,
+                                         self.given_hash[:7], self.difficulty,
+                                         self.scale)
 
 
     def notifyOfChange(self, callback):
@@ -43,4 +50,13 @@ class Job(object):
         Set the name of the miner doing this job and notify things that care.
         """
         self.miner = name
+        self._notify()
+
+
+    def setResult(self, result):
+        """
+        Set the result and notify things that care.
+        """
+        self.result = result
+        self.done.callback(self)
         self._notify()

@@ -20,6 +20,6 @@ class NotifyingWrap(object):
 
 
     def _doneMining(self, result, job):
+        job.setResult(result)
         job.setStatus('done')
-        job.result.callback(result)
         return result
