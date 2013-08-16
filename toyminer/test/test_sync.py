@@ -2,7 +2,8 @@ from twisted.trial.unittest import TestCase
 from hashlib import sha1
 
 
-from toyminer.solver import SyncMiner, validAnswer
+from toyminer.sync import SyncMiner
+from toyminer.validate import validAnswer
 
 
 class SyncMinerTest(TestCase):
